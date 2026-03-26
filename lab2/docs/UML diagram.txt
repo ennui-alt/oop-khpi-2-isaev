@@ -1,11 +1,18 @@
 @startuml
-package ua/khpi/oop/lab01 {
+package ua-khpi-oop-lab02 {
 
     class Guest {
         - name : String
         - phone : String
         + Guest(name : String, phone : String)
+        + Guest(name : String)
+        + getName() : String
+        + getPhone() : String
+        + setName(name : String) : void
+        + setPhone(phone : String) : void
+        + changePhone(newPhone : String) : void
         + toString() : String
+        + equals(o : Object) : boolean
         + hashCode() : int
     }
 
@@ -13,7 +20,15 @@ package ua/khpi/oop/lab01 {
         - number : int
         - price : double
         + Room(number : int, price : double)
+        + Room(number : int)
+        + getNumber() : int
+        + getPrice() : double
+        + setNumber(number : int) : void
+        + setPrice(price : double) : void
+        + changePrice(newPrice : double) : void
+        + isExpensive() : boolean
         + toString() : String
+        + equals(o : Object) : boolean
         + hashCode() : int
     }
 
@@ -22,7 +37,13 @@ package ua/khpi/oop/lab01 {
         - room : Room
         - date : String
         + Reservation(guest : Guest, room : Room, date : String)
+        + Reservation(guest : Guest, room : Room)
+        + getGuest() : Guest
+        + getRoom() : Room
+        + getDate() : String
+        + changeDate(newDate : String) : void
         + toString() : String
+        + equals(o : Object) : boolean
         + hashCode() : int
     }
 
@@ -32,10 +53,20 @@ package ua/khpi/oop/lab01 {
         - rooms : List<Room>
         - reservations : List<Reservation>
         + Hotel(name : String, city : String)
+        + Hotel(name : String)
+        + getName() : String
+        + getCity() : String
+        + getRooms() : List<Room>
+        + getReservations() : List<Reservation>
+        + setName(name : String) : void
+        + setCity(city : String) : void
+        + renameHotel(newName : String) : void
+        + changeCity(newCity : String) : void
         + addRoom(room : Room) : void
         + createReservation(guest : Guest, room : Room, date : String) : void
-        + getReservations() : List<Reservation>
+        + removeReservation(reservation : Reservation) : void
         + toString() : String
+        + equals(o : Object) : boolean
         + hashCode() : int
     }
 
