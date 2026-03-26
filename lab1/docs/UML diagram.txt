@@ -1,0 +1,56 @@
+@startuml
+package oop-khpi-2-isaev {
+
+    class Guest {
+        - name : String
+        - phone : String
+        + Guest(name : String, phone : String)
+        + Guest(name : String)
+        + changePhone(newPhone : String) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+    }
+
+    class Room {
+        - number : int
+        - price : double
+        + Room(number : int, price : double)
+        + Room(number : int)
+        + changePrice(newPrice : double) : void
+        + isExpensive() : boolean
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+    }
+
+    class Hotel {
+        - name : String
+        - city : String
+        + Hotel(name : String, city : String)
+        + Hotel(name : String)
+        + renameHotel(newName : String) : void
+        + changeCity(newCity : String) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+    }
+
+    class Reservation {
+        - guest : Guest
+        - room : Room
+        - date : String
+        + Reservation(guest : Guest, room : Room, date : String)
+        + Reservation(guest : Guest, room : Room)
+        + changeDate(newDate : String) : void
+        + changeRoom(newRoom : Room) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+    }
+
+    Reservation --> Guest
+    Reservation --> Room
+    Hotel --> Reservation
+}
+@enduml
