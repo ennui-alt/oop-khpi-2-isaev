@@ -1,10 +1,16 @@
 package ua.khpi.oop.lab01;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Hotel {
     private String name;
     private String city;
+
+    private List<Room> rooms = new ArrayList<>();
+
+    private List<Reservation> reservations = new ArrayList<>();
 
     public Hotel(String name, String city) {
         this.name = name;
@@ -23,6 +29,14 @@ public class Hotel {
         return city;
     }
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -39,9 +53,28 @@ public class Hotel {
         this.city = newCity;
     }
 
+    public void addRoom(Room room) {
+        if (room != null) {
+            rooms.add(room);
+        }
+    }
+
+    public void createReservation(Guest guest, Room room, String date) {
+        if (guest != null && room != null) {
+            reservations.add(new Reservation(guest, room, date));
+        }
+    }
+
+    public void removeReservation(Reservation reservation) {
+        reservations.remove(reservation);
+    }
+
     @Override
     public String toString() {
-        return String.format("Hotel:\n  name: %s\n  city: %s", name, city);
+        return String.format(
+                "Hotel:\n name: %s\n city: %s\n rooms: %d\n reservations: %d",
+                name, city, rooms.size(), reservations.size()
+        );
     }
 
     @Override

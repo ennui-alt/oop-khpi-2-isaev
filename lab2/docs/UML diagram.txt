@@ -1,0 +1,47 @@
+@startuml
+package ua/khpi/oop/lab01 {
+
+    class Guest {
+        - name : String
+        - phone : String
+        + Guest(name : String, phone : String)
+        + toString() : String
+        + hashCode() : int
+    }
+
+    class Room {
+        - number : int
+        - price : double
+        + Room(number : int, price : double)
+        + toString() : String
+        + hashCode() : int
+    }
+
+    class Reservation {
+        - guest : Guest
+        - room : Room
+        - date : String
+        + Reservation(guest : Guest, room : Room, date : String)
+        + toString() : String
+        + hashCode() : int
+    }
+
+    class Hotel {
+        - name : String
+        - city : String
+        - rooms : List<Room>
+        - reservations : List<Reservation>
+        + Hotel(name : String, city : String)
+        + addRoom(room : Room) : void
+        + createReservation(guest : Guest, room : Room, date : String) : void
+        + getReservations() : List<Reservation>
+        + toString() : String
+        + hashCode() : int
+    }
+
+    Reservation o-- Guest : guest
+    Reservation o-- Room : room
+    Hotel o-- Room : rooms
+    Hotel *-- Reservation : reservations
+}
+@enduml

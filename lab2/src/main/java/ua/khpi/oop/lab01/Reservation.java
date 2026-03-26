@@ -29,31 +29,15 @@ public class Reservation {
         return date;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public void changeDate(String newDate) {
         this.date = newDate;
-    }
-
-    public void changeRoom(Room newRoom) {
-        this.room = newRoom;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Reservation:\n%s\n%s\n  date: %s",
-                guest, room, date
+                "Reservation:\n guest: %s\n room: %s\n date: %s",
+                guest.getName(), room.getNumber(), date
         );
     }
 
