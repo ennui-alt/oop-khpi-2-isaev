@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
 
         System.out.println("=== Введення даних гостя ===");
@@ -41,13 +40,21 @@ public class Main {
 
         Reservation reservation1 = new Reservation(guest1, room1, date);
 
+        hotel.addReservation(reservation1);
+
         System.out.println("\n=== toString() ===");
         System.out.println(guest1);
+        System.out.println();
         System.out.println(room1);
+        System.out.println();
         System.out.println(hotel);
+        System.out.println();
         System.out.println(reservation1);
 
-        System.out.println("\n=== Створіть ще одного гостя для порівняння ===");
+        System.out.println("\n=== Бронювання в готелі ===");
+        hotel.printReservations();
+
+        System.out.println("=== Створіть ще одного гостя для порівняння ===");
         System.out.print("Ім'я: ");
         String guestName2 = sc.nextLine();
 

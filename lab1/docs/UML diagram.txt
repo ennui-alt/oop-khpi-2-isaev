@@ -24,18 +24,6 @@ package oop-khpi-2-isaev {
         + hashCode() : int
     }
 
-    class Hotel {
-        - name : String
-        - city : String
-        + Hotel(name : String, city : String)
-        + Hotel(name : String)
-        + renameHotel(newName : String) : void
-        + changeCity(newCity : String) : void
-        + toString() : String
-        + equals(o : Object) : boolean
-        + hashCode() : int
-    }
-
     class Reservation {
         - guest : Guest
         - room : Room
@@ -44,6 +32,21 @@ package oop-khpi-2-isaev {
         + Reservation(guest : Guest, room : Room)
         + changeDate(newDate : String) : void
         + changeRoom(newRoom : Room) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+    }
+
+    class Hotel {
+        - name : String
+        - city : String
+        - reservations : List<Reservation>
+        + Hotel(name : String, city : String)
+        + Hotel(name : String)
+        + renameHotel(newName : String) : void
+        + changeCity(newCity : String) : void
+        + addReservation(reservation : Reservation) : void
+        + printReservations() : void
         + toString() : String
         + equals(o : Object) : boolean
         + hashCode() : int

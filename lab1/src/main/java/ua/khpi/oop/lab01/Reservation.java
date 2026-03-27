@@ -60,7 +60,7 @@ public class Reservation {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Reservation)) return false;
         Reservation that = (Reservation) o;
         return Objects.equals(guest, that.guest) &&
                 Objects.equals(room, that.room) &&

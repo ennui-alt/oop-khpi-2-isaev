@@ -43,7 +43,7 @@ public class Guest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Guest)) return false;
         Guest guest = (Guest) o;
         return Objects.equals(name, guest.name) &&
                 Objects.equals(phone, guest.phone);
