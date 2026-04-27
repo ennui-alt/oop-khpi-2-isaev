@@ -31,9 +31,6 @@ public class Guest {
         this.phone = phone;
     }
 
-    public void changePhone(String newPhone) {
-        this.phone = newPhone;
-    }
 
     @Override
     public String toString() {
