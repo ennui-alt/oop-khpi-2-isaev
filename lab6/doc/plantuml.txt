@@ -1,0 +1,77 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+abstract class Assessment {
+    # assessmentId : String
+    # courseName : String
+    # studentName : String
+    # studentGroup : String
+    # maxScore : double
+    # earnedScore : double
+    --
+    + getPercentage() : double
+    + hasMinimumPercentage(minimumPercentage : double) : boolean
+    + summary() : String
+    {abstract} + evaluateResult() : String
+}
+
+class Exam {
+    - durationMinutes : int
+    - proctored : boolean
+    --
+    + evaluateResult() : String
+    + getDurationMinutes() : int
+    + isProctored() : boolean
+}
+
+class QuizAssessment {
+    - attemptNumber : int
+    - maxAttempts : int
+    - timeLimitMinutes : int
+    --
+    + evaluateResult() : String
+    + getAttemptNumber() : int
+    + getMaxAttempts() : int
+    + getTimeLimitMinutes() : int
+}
+
+class CourseProject {
+    - defensePassed : boolean
+    - repositoryLink : String
+    --
+    + evaluateResult() : String
+    + isDefensePassed() : boolean
+    + getRepositoryLink() : String
+}
+
+Assessment <|-- Exam
+Assessment <|-- QuizAssessment
+Assessment <|-- CourseProject
+
+note left of Assessment
+Спільний стан і спільна поведінка
+винесені до абстрактного базового
+класу Assessment.
+
+Метод evaluateResult()
+є абстрактним поліморфним
+контрактом.
+end note
+
+note bottom of Exam
+Exam перевіряє прокторинг
+і мінімальний результат 60%.
+end note
+
+note bottom of QuizAssessment
+QuizAssessment перевіряє
+кількість спроб і мінімум 50%.
+end note
+
+note bottom of CourseProject
+CourseProject перевіряє
+захист проєкту і мінімум 70%.
+end note
+
+@enduml
