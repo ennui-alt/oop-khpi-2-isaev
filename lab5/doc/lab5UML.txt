@@ -1,0 +1,88 @@
+@startuml
+!theme sunlust
+
+class MedicalWorker {
+  - fullName : String
+  - hospitalName : String
+  - experienceYears : int
+  --
+  + getFullName() : String
+  + getHospitalName() : String
+  + getExperienceYears() : int
+  + description() : String
+}
+
+class Doctor {
+  - specialization : String
+  - licenseNumber : String
+  --
+  + getSpecialization() : String
+  + getLicenseNumber() : String
+  + description() : String
+}
+
+class Surgeon {
+  - operationsCount : int
+  - operatingRoom : String
+  --
+  + getOperationsCount() : int
+  + getOperatingRoom() : String
+  + description() : String
+}
+
+class CardiacSurgeon <<final>> {
+  - heartOperationsCount : int
+  - usesHeartLungMachine : boolean
+  --
+  + getHeartOperationsCount() : int
+  + isUsesHeartLungMachine() : boolean
+  + description() : String
+}
+
+class Pediatrician {
+  - maxPatientAge : int
+  - vaccinationCertified : boolean
+  --
+  + getMaxPatientAge() : int
+  + isVaccinationCertified() : boolean
+  + description() : String
+}
+
+MedicalWorker <|-- Doctor : є різновидом
+Doctor <|-- Surgeon : хірургічна спеціалізація
+Surgeon <|-- CardiacSurgeon : спеціалізація на серці
+Doctor <|-- Pediatrician : робота з дітьми
+
+note left of MedicalWorker
+Спільний стан:
+ім’я працівника,
+назва лікарні,
+стаж роботи.
+end note
+
+note right of Doctor
+Власний стан:
+спеціалізація,
+номер ліцензії.
+end note
+
+note bottom of Surgeon
+Власний стан:
+кількість операцій,
+операційна кімната.
+end note
+
+note bottom of CardiacSurgeon
+Власний стан:
+кількість операцій на серці,
+використання апарата
+штучного кровообігу.
+end note
+
+note bottom of Pediatrician
+Власний стан:
+максимальний вік пацієнтів,
+сертифікація з вакцинації.
+end note
+
+@enduml
