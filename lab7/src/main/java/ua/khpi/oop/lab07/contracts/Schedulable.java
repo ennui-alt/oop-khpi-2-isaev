@@ -1,4 +1,5 @@
 package ua.khpi.oop.lab07.contracts;
 
-public class Schedulable {
+public interface Schedulable {
+    String schedule(String dateTime);
 }

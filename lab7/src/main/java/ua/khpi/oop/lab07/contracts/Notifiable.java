@@ -1,4 +1,7 @@
 package ua.khpi.oop.lab07.contracts;
 
-public class Notifiable {
+public interface Notifiable {
+    String notifyStudent(String studentName);
 }
+
+//1 
