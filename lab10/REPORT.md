@@ -983,11 +983,6 @@ taskList.add(task3);
 Підпис до діаграми:
 
 
-
-\*\*Рисунок 1 — UML-діаграма класів для лабораторної роботи №10 “Список задач команди”\*\*
-
-
-
 \## Юніт-тестування
 
 
@@ -1002,7 +997,9 @@ taskList.add(task3);
 
 ```text
 
-src/test/java
+src\test\java\ua\khpi\oop\lab10\container\TaskContainerTest.java
+src\test\java\ua\khpi\oop\lab10\model\StatusRecordTest.java
+src\test\java\ua\khpi\oop\lab10\model\TaskTest.java
 
 ```
 
