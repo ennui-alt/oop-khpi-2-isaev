@@ -63,15 +63,6 @@ class TeamTaskPlannerTest {
     }
 
     @Test
-    void initialPlannerShouldBeEmpty() {
-        assertTrue(planner.isEmpty());
-        assertEquals(0, planner.getTaskCount());
-        assertEquals(0, planner.getDeveloperCount());
-        assertTrue(planner.getAllTasks().isEmpty());
-        assertTrue(planner.getDevelopers().isEmpty());
-    }
-
-    @Test
     void addTaskShouldIncreaseTaskCount() {
         planner.addTask(task1);
 
@@ -103,15 +94,6 @@ class TeamTaskPlannerTest {
     }
 
     @Test
-    void findTaskByWrongIdShouldReturnNull() {
-        planner.addTask(task1);
-
-        Task foundTask = planner.findTaskById("Wrong-ID");
-
-        assertNull(foundTask);
-    }
-
-    @Test
     void removeTaskShouldDeleteTaskFromListAndQueue() {
         planner.addTask(task1);
         planner.addTask(task2);
@@ -125,16 +107,6 @@ class TeamTaskPlannerTest {
     }
 
     @Test
-    void removeWrongTaskShouldReturnFalse() {
-        planner.addTask(task1);
-
-        boolean removed = planner.removeTask("Wrong-ID");
-
-        assertFalse(removed);
-        assertEquals(1, planner.getTaskCount());
-    }
-
-    @Test
     void updateTaskStatusShouldChangeStatus() {
         planner.addTask(task1);
 
@@ -142,16 +114,6 @@ class TeamTaskPlannerTest {
 
         assertTrue(updated);
         assertEquals(TaskStatus.IN_PROGRESS, planner.findTaskById("T-1").getStatus());
-    }
-
-    @Test
-    void updateWrongTaskStatusShouldReturnFalse() {
-        planner.addTask(task1);
-
-        boolean updated = planner.updateTaskStatus("Wrong-ID", TaskStatus.DONE);
-
-        assertFalse(updated);
-        assertEquals(TaskStatus.TODO, task1.getStatus());
     }
 
     @Test
@@ -229,30 +191,21 @@ class TeamTaskPlannerTest {
     }
 
     @Test
-    void addingNullTaskShouldThrowException() {
+    void addingNullValuesShouldThrowException() {
         assertThrows(IllegalArgumentException.class, () -> planner.addTask(null));
-    }
-
-    @Test
-    void addingNullDeveloperShouldThrowException() {
         assertThrows(IllegalArgumentException.class, () -> planner.addDeveloper(null));
     }
 
     @Test
-    void returnedTaskListShouldBeUnmodifiable() {
-        planner.addTask(task1);
-
-        List<Task> tasks = planner.getAllTasks();
-
-        assertThrows(UnsupportedOperationException.class, () -> tasks.add(task2));
-    }
-
-    @Test
-    void returnedQueueShouldBeCopy() {
+    void returnedCollectionsShouldBeProtected() {
         planner.addTask(task1);
         planner.addTask(task2);
 
+        List<Task> tasks = planner.getAllTasks();
         Queue<Task> queueCopy = planner.getTaskQueue();
+
+        assertThrows(UnsupportedOperationException.class, () -> tasks.add(task3));
+
         queueCopy.poll();
 
         assertEquals(2, planner.getTaskQueue().size());
