@@ -202,6 +202,8 @@ src/main/java/ua/khpi/oop/lab11/demo/Main.java
 
 src/test/java/ua/khpi/oop/lab11/service/TeamTaskPlannerTest.java
 
+src/test/java/ua/khpi/oop/lab11/demo/MainTest.java
+
 doc/lab11UML.png
 
 doc/lab11UML.txt
