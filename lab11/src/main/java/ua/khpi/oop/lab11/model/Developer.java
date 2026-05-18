@@ -22,7 +22,6 @@ public class Developer {
         this.name = name;
     }
 
-    // email використовується як унікальна ознака розробника
     public String getEmail() {
         return email;
     }

@@ -201,9 +201,9 @@ class TeamTaskPlannerTest {
 
     @Test
     void tasksShouldBeSortedByPriority() {
-        planner.addTask(task1); // priority 2
-        planner.addTask(task2); // priority 1
-        planner.addTask(task3); // priority 3
+        planner.addTask(task1);
+        planner.addTask(task2);
+        planner.addTask(task3);
 
         List<Task> sortedTasks = planner.getTasksSortedByPriority();
 

@@ -74,7 +74,6 @@ public class Task {
                 '}';
     }
 
-    // id використовується як унікальний номер задачі
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
