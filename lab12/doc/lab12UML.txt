@@ -1,0 +1,105 @@
+@startuml
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam nodesep 70
+skinparam ranksep 80
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 10
+
+class Product <<model>> {
+    - name: String
+    - category: String
+    - price: double
+    + getName(): String
+    + getCategory(): String
+    + getPrice(): double
+}
+
+class Customer <<model>> {
+    - fullName: String
+    - email: String
+    - city: String
+    + getFullName(): String
+    + getEmail(): String
+    + getCity(): String
+}
+
+enum OrderStatus {
+    NEW
+    PAID
+    SHIPPED
+    COMPLETED
+    CANCELLED
+    --
+    + getTitle(): String
+}
+
+class Order <<model>> {
+    - number: int
+    - customer: Customer
+    - products: List<Product>
+    - status: OrderStatus
+    - date: LocalDate
+    + getNumber(): int
+    + getCustomer(): Customer
+    + getProducts(): List<Product>
+    + getStatus(): OrderStatus
+    + getDate(): LocalDate
+    + getTotalPrice(): double
+}
+
+class OrderService <<service>> {
+    - orders: List<Order>
+    + getAllOrders(): List<Order>
+    + findOrdersByStatus(status): List<Order>
+    + getAllProductNamesSorted(): List<String>
+    + getOrdersSortedByTotalPriceDesc(): List<Order>
+    + calculateIncomeFromCompletedOrders(): double
+    + countOrdersByStatus(): Map<OrderStatus, Long>
+    + groupOrdersByStatus(): Map<OrderStatus, List<Order>>
+    + getCustomersWithCompletedOrders(): List<Customer>
+    + getOrderPriceStatistics(): DoubleSummaryStatistics
+    + buildOrdersReport(): String
+    + findOrdersByStatusImperative(status): List<Order>
+}
+
+class Main <<demo>> {
+    + main(args: String[]): void
+    - formatOrderNumbers(orders): String
+}
+
+class OrderServiceTest <<test>> {
+    + tests service logic
+}
+
+class MainTest <<test>> {
+    + tests demo output
+}
+
+Order --> Customer : покупець
+Order --> Product : товари
+Order --> OrderStatus : статус
+
+OrderService o-- Order : обробляє
+
+Main ..> OrderService : використовує
+Main ..> Product : створює
+Main ..> Customer : створює
+Main ..> Order : створює
+Main ..> OrderStatus : використовує
+
+OrderServiceTest ..> OrderService : тестує
+MainTest ..> Main : тестує
+
+note right of OrderService
+Stream API:
+filter(), map(), flatMap(),
+distinct(), sorted(), sum(),
+groupingBy(), counting(),
+summarizingDouble(), joining()
+end note
+
+@enduml

@@ -1,0 +1,69 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+
+class Main {
+    +main(String[]): void
+}
+
+class CampusServiceRegistry {
+    -services: List<CampusService>
+    +addService(CampusService): void
+    +getServices(): List<CampusService>
+    +findById(String): Optional<CampusService>
+    +findByStudentName(String): List<CampusService>
+}
+
+class CampusServiceFileManager {
+    +saveAsText(CampusServiceRegistry, Path): void
+    +loadFromText(Path): CampusServiceRegistry
+    +serialize(CampusServiceRegistry, Path): void
+    +deserialize(Path): CampusServiceRegistry
+}
+
+abstract class CampusService {
+    -id: String
+    -studentName: String
+    -date: LocalDate
+    -time: LocalTime
+    +getType(): String
+    +toTextLine(): String
+}
+
+class ExamReminder {
+    -courseName: String
+    -auditorium: String
+}
+
+class RoomBooking {
+    -roomNumber: String
+    -purpose: String
+}
+
+class ConsultationSlot {
+    -teacherName: String
+    -subject: String
+}
+
+class InvalidCampusServiceException
+class Exception
+
+Main --> CampusServiceRegistry : uses
+Main --> CampusServiceFileManager : uses
+
+CampusServiceRegistry --> CampusService : manages
+CampusServiceRegistry --> InvalidCampusServiceException : throws
+
+CampusServiceFileManager --> CampusServiceRegistry : reads/writes
+CampusServiceFileManager --> CampusService : parses
+CampusServiceFileManager --> InvalidCampusServiceException : throws
+
+ExamReminder --|> CampusService
+RoomBooking --|> CampusService
+ConsultationSlot --|> CampusService
+
+InvalidCampusServiceException --|> Exception
+
+caption Рисунок 1 – Поділ моделі, реєстру та підсистеми збереження даних
+@enduml
