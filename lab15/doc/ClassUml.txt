@@ -1,0 +1,99 @@
+@startuml
+title UML-діаграма класів лабораторної роботи №15
+
+skinparam classAttributeIconSize 0
+
+class Main {
+    - THREAD_COUNT : int
+    - ITERATIONS : int
+    - ROOM_COUNT : int
+    - PLACES_PER_ROOM : int
+    + main(args : String[]) : void
+    - runScenario(mode : BookingTask.Mode) : void
+}
+
+class BookingService {
+    - rooms : List<HotelRoom>
+    + BookingService(rooms : List<HotelRoom>)
+    + bookUnsafe(request : BookingRequest) : Integer
+    + bookSafe(request : BookingRequest) : Integer
+    + getTotalCapacity() : int
+    + getTotalBookedPlaces() : int
+    + getTotalFreePlaces() : int
+    + getRooms() : List<HotelRoom>
+    + clearBookings() : void
+    + createHotel(roomCount : int, placesPerRoom : int) : BookingService
+}
+
+class HotelRoom {
+    - roomNumber : int
+    - capacity : int
+    - bookedPlaces : int
+    + HotelRoom(roomNumber : int, capacity : int)
+    + getRoomNumber() : int
+    + getCapacity() : int
+    + getBookedPlaces() : int
+    + getFreePlaces() : int
+    + bookUnsafe(places : int) : boolean
+    + bookSafe(places : int) : boolean
+    + clearBookings() : void
+    - checkPlaces(places : int) : void
+    + toString() : String
+}
+
+class BookingRequest {
+    - requestId : int
+    - guestName : String
+    - places : int
+    + BookingRequest(requestId : int, guestName : String, places : int)
+    + getRequestId() : int
+    + getGuestName() : String
+    + getPlaces() : int
+    + toString() : String
+}
+
+class BookingTask {
+    - bookingService : BookingService
+    - mode : Mode
+    - requestsCount : int
+    - guestPrefix : String
+    - successfulBookings : int
+    - failedBookings : int
+    + BookingTask(bookingService : BookingService, mode : Mode, requestsCount : int, guestPrefix : String)
+    + run() : void
+    + getSuccessfulBookings() : int
+    + getFailedBookings() : int
+}
+
+enum Mode {
+    UNSAFE
+    SAFE
+}
+
+interface Runnable {
+    + run() : void
+}
+
+Main --> BookingService : створює
+Main --> BookingTask : запускає потоки
+BookingTask ..|> Runnable
+BookingTask --> BookingService : використовує
+BookingTask --> BookingRequest : створює заявки
+BookingTask --> Mode : режим роботи
+BookingService *-- "1..*" HotelRoom : містить
+BookingService --> BookingRequest : обробляє
+HotelRoom <-- BookingRequest : бронювання місць
+
+note right of HotelRoom
+bookUnsafe() — без синхронізації
+bookSafe() — synchronized
+Спільний ресурс: bookedPlaces
+end note
+
+note bottom of Main
+Main створює Thread[],
+запускає start()
+і очікує завершення через join()
+end note
+
+@enduml

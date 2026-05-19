@@ -1,0 +1,62 @@
+@startuml
+title Сценарій запуску потоків і очікування завершення через join()
+
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+
+participant "Main" as Main
+participant "BookingService\nсервіс бронювання" as Service
+participant "HotelRoom\nспільний ресурс\nbookedPlaces" as Room
+participant "Потік 1\nBookingTask" as T1
+participant "Потік 2\nBookingTask" as T2
+participant "Потік N\nBookingTask" as TN
+
+Main -> Service : createHotel(roomCount, placesPerRoom)
+
+Main -> T1 : new Thread(task, "Потік-1")
+Main -> T2 : new Thread(task, "Потік-2")
+Main -> TN : new Thread(task, "Потік-N")
+
+Main -> T1 : start()
+Main -> T2 : start()
+Main -> TN : start()
+
+par Паралельне виконання
+    T1 -> Service : bookSafe(request)
+    Service -> Room : bookSafe(places)
+    Room --> Service : true / false
+    Service --> T1 : номер кімнати / null
+else
+    T2 -> Service : bookSafe(request)
+    Service -> Room : bookSafe(places)
+    Room --> Service : true / false
+    Service --> T2 : номер кімнати / null
+else
+    TN -> Service : bookSafe(request)
+    Service -> Room : bookSafe(places)
+    Room --> Service : true / false
+    Service --> TN : номер кімнати / null
+end
+
+Main -> T1 : join()
+Main -> T2 : join()
+Main -> TN : join()
+
+Main -> Service : getTotalBookedPlaces()
+Service -> Room : getBookedPlaces()
+Room --> Service : bookedPlaces
+Service --> Main : фінальний результат
+
+note over Main, Service
+Після join() усі потоки завершені.
+Фінальний стан спільного ресурсу
+можна безпечно читати.
+end note
+
+note right of Room
+bookSafe() використовує synchronized.
+Критична секція — зміна bookedPlaces.
+end note
+
+@enduml
