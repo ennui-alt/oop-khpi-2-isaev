@@ -1,0 +1,38 @@
+@startuml
+title Межа JNI для NativeAverageCalculator
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+component "Main" as Main
+component "CalculationService" as Service
+component "AverageCalculator\nJava" as JavaCalc
+component "NativeAverageCalculator\nJNI" as NativeCalc
+artifact "JNI header\n*.h" as Header
+artifact "nativeaverage.cpp" as Cpp
+artifact "nativeaverage.dll\nlibnativeaverage.so" as Lib
+component "java.library.path" as Path
+
+Main --> Service : масив
+Service --> JavaCalc : average(values)
+Service --> NativeCalc : average(values)
+
+NativeCalc ..> Header : javac -h
+Header --> Cpp : JNI-сигнатура
+Cpp --> Lib : clang++
+NativeCalc --> Path : System.loadLibrary()
+Path --> Lib : пошук бібліотеки
+Lib --> NativeCalc : результат
+
+note right of NativeCalc
+Java-клас оголошує native-метод
+і завантажує бібліотеку.
+end note
+
+note bottom of Lib
+Windows: nativeaverage.dll
+Linux CI: libnativeaverage.so
+end note
+
+@enduml
