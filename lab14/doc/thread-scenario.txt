@@ -1,0 +1,45 @@
+@startuml
+title Сценарій запуску потоків у лабораторній роботі №14
+
+actor User
+participant Main
+participant "OrderProcessor\nextends Thread" as OrderThread
+participant "DescriptionChecker\nRunnable" as DescriptionThread
+participant "InvoiceGenerator\nRunnable" as InvoiceThread
+participant StoreService
+
+User -> Main: запуск програми
+
+Main -> OrderThread: start()
+activate OrderThread
+
+Main -> DescriptionThread: start()
+activate DescriptionThread
+
+Main -> InvoiceThread: start()
+activate InvoiceThread
+
+OrderThread -> StoreService: processOrder(order)
+OrderThread -> OrderThread: sleep()
+
+DescriptionThread -> StoreService: isDescriptionGood(product)
+DescriptionThread -> DescriptionThread: sleep()
+
+InvoiceThread -> StoreService: createInvoice(order)
+InvoiceThread -> InvoiceThread: sleep()
+
+Main -> OrderThread: join()
+OrderThread --> Main: завершено
+deactivate OrderThread
+
+Main -> DescriptionThread: join()
+DescriptionThread --> Main: завершено
+deactivate DescriptionThread
+
+Main -> InvoiceThread: join()
+InvoiceThread --> Main: завершено
+deactivate InvoiceThread
+
+Main -> User: виведення результатів
+
+@enduml

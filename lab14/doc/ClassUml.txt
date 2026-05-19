@@ -1,0 +1,85 @@
+@startuml
+title Діаграма класів лабораторної роботи №14
+
+skinparam classAttributeIconSize 0
+hide empty members
+
+class Main {
+  +main()
+}
+
+class Product {
+  -id: int
+  -name: String
+  -description: String
+  -price: double
+  +hasNormalDescription(): boolean
+}
+
+class Order {
+  -number: int
+  -customerName: String
+  -products: List<Product>
+  +getTotalAmount(): double
+}
+
+class Invoice {
+  -orderNumber: int
+  -customerName: String
+  -totalAmount: double
+  -createdAt: LocalDateTime
+}
+
+class StoreService {
+  +processOrder(): String
+  +isDescriptionGood(): boolean
+  +createInvoice(): Invoice
+}
+
+class OrderProcessingThread {
+  -orders: List<Order>
+  -processedOrders: List<String>
+  +run(): void
+}
+
+class ProductDescriptionTask {
+  -products: List<Product>
+  -productsWithShortDescription: List<Product>
+  +run(): void
+}
+
+class InvoiceTask {
+  -orders: List<Order>
+  -invoices: List<Invoice>
+  +run(): void
+}
+
+class Thread
+interface Runnable
+
+Order "1" o-- "1..*" Product
+
+OrderProcessingThread --|> Thread
+ProductDescriptionTask ..|> Runnable
+InvoiceTask ..|> Runnable
+
+Main ..> StoreService
+Main ..> OrderProcessingThread
+Main ..> ProductDescriptionTask
+Main ..> InvoiceTask
+
+StoreService ..> Product
+StoreService ..> Order
+StoreService ..> Invoice
+
+OrderProcessingThread ..> Order
+OrderProcessingThread ..> StoreService
+
+ProductDescriptionTask ..> Product
+ProductDescriptionTask ..> StoreService
+
+InvoiceTask ..> Order
+InvoiceTask ..> Invoice
+InvoiceTask ..> StoreService
+
+@enduml
