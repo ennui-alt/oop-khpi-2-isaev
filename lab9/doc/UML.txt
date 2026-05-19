@@ -1,0 +1,84 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+package "model" {
+class Customer {
+  - name : String
+  - phone : String
+  + getName() : String
+}
+
+class Room {
+  - number : int
+  - type : String
+  - price : double
+  + getNumber() : int
+  + getPrice() : double
+  + compareTo(other : Room) : int
+}
+
+class Reservation {
+  - customer : Customer
+  - room : Room
+  - from : LocalDate
+  - to : LocalDate
+  - confirmed : boolean
+  + isConfirmed() : boolean
+  + hasConflict(room : Room, from : LocalDate, to : LocalDate) : boolean
+  + compareTo(other : Reservation) : int
+}
+
+class BookingLink~C,R~ {
+  - customer : C
+  - resource : R
+  + getCustomer() : C
+  + getResource() : R
+}
+
+class BookingUtils {
+  + getConfirmed(reservations : List<T>) : List<T>
+  + isRoomBusy(reservations : List<T>, room : Room, from : LocalDate, to : LocalDate) : boolean
+  + findSmallest(list : List<T>) : T
+}
+}
+
+package "demo" {
+class Main {
+  + main(args : String[]) : void
+}
+}
+
+Customer --> Reservation
+Room --> Reservation
+Reservation --> Customer
+Reservation --> Room
+
+Main ..> Customer
+Main ..> Room
+Main ..> Reservation
+Main ..> BookingLink
+Main ..> BookingUtils
+
+BookingLink ..> Customer
+BookingLink ..> Room
+BookingLink ..> Reservation
+
+BookingUtils ..> Reservation
+BookingUtils ..> Room
+
+note right of BookingLink
+Generic-клас:
+BookingLink<Customer, Room>
+BookingLink<Customer, Reservation>
+end note
+
+note right of BookingUtils
+Generic-методи:
+<T extends Reservation>
+<T extends Comparable>
+end note
+
+@enduml
