@@ -1,0 +1,95 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+class Developer {
+    - name : String
+    - email : String
+    - specialization : String
+
+    + Developer(name : String, email : String, specialization : String)
+    + getName() : String
+    + setName(name : String) : void
+    + getEmail() : String
+    + getSpecialization() : String
+    + setSpecialization(specialization : String) : void
+    + toString() : String
+    + equals(o : Object) : boolean
+    + hashCode() : int
+}
+
+class Sprint {
+    - name : String
+    - startDate : String
+    - endDate : String
+
+    + Sprint(name : String, startDate : String, endDate : String)
+    + getName() : String
+    + getStartDate() : String
+    + getEndDate() : String
+    + toString() : String
+}
+
+enum TaskStatus {
+    TODO
+    IN_PROGRESS
+    DONE
+}
+
+class Task {
+    - id : String
+    - title : String
+    - description : String
+    - priority : int
+    - developer : Developer
+    - sprint : Sprint
+    - status : TaskStatus
+
+    + Task(id : String, title : String, description : String, priority : int, developer : Developer, sprint : Sprint)
+    + getId() : String
+    + getTitle() : String
+    + getPriority() : int
+    + getDeveloper() : Developer
+    + getSprint() : Sprint
+    + getStatus() : TaskStatus
+    + setTitle(title : String) : void
+    + setPriority(priority : int) : void
+    + setDeveloper(developer : Developer) : void
+    + setStatus(status : TaskStatus) : void
+    + toString() : String
+    + equals(o : Object) : boolean
+    + hashCode() : int
+}
+
+class TeamTaskPlanner {
+    - tasks : List<Task>
+    - taskQueue : Queue<Task>
+    - developers : Set<Developer>
+
+    + addDeveloper(developer : Developer) : void
+    + addTask(task : Task) : void
+    + findTaskById(id : String) : Task
+    + findTasksByDeveloper(developer : Developer) : List<Task>
+    + removeTask(id : String) : boolean
+    + updateTaskStatus(id : String, status : TaskStatus) : boolean
+    + takeNextTask() : Task
+    + getAllTasks() : List<Task>
+    + getTaskQueue() : Queue<Task>
+    + getDevelopers() : Set<Developer>
+    + getTaskCount() : int
+    + getDeveloperCount() : int
+    + isEmpty() : boolean
+    + getTasksSortedByPriority() : List<Task>
+    + printAllTasks() : void
+    + printDevelopers() : void
+}
+
+Task --> Developer : assigned to
+Task --> Sprint : belongs to
+Task --> TaskStatus : has status
+
+TeamTaskPlanner o-- "0..*" Task : List<Task>\nQueue<Task>
+TeamTaskPlanner o-- "0..*" Developer : Set<Developer>
+
+@enduml
