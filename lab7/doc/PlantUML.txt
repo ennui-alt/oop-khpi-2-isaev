@@ -1,0 +1,60 @@
+@startuml
+
+left to right direction
+
+skinparam class {
+    FontName Times New Roman
+}
+
+skinparam title {
+    FontName Times New Roman
+    FontSize 18
+}
+
+interface Notifiable {
+    +notifyStudent(studentName: String): String
+}
+
+interface Schedulable {
+    +schedule(dateTime: String): String
+}
+
+class ExamReminder {
+    -subject: String
+    -examDate: String
+    +ExamReminder(subject: String, examDate: String)
+    +getSubject(): String
+    +getExamDate(): String
+    +notifyStudent(studentName: String): String
+}
+
+class RoomBooking {
+    -roomNumber: String
+    -purpose: String
+    -time: String
+    +RoomBooking(roomNumber: String, purpose: String)
+    +getRoomNumber(): String
+    +getPurpose(): String
+    +getTime(): String
+    +schedule(dateTime: String): String
+}
+
+class ConsultationSlot {
+    -teacherName: String
+    -subject: String
+    -time: String
+    +ConsultationSlot(teacherName: String, subject: String)
+    +getTeacherName(): String
+    +getSubject(): String
+    +getTime(): String
+    +schedule(dateTime: String): String
+    +notifyStudent(studentName: String): String
+}
+
+Notifiable <|.. ExamReminder
+Notifiable <|.. ConsultationSlot
+
+Schedulable <|.. RoomBooking
+Schedulable <|.. ConsultationSlot
+
+@enduml
