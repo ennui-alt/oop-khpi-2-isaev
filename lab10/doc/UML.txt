@@ -1,0 +1,101 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Developer {
+  - id : int
+  - name : String
+  - role : String
+  + Developer(id : int, name : String, role : String)
+  + getId() : int
+  + getName() : String
+  + getRole() : String
+  + toString() : String
+}
+
+enum TaskStatus {
+  NEW
+  IN_PROGRESS
+  CHECKING
+  DONE
+}
+
+class StatusRecord {
+  - status : TaskStatus
+  - comment : String
+  - date : LocalDateTime
+  - developer : Developer
+  + StatusRecord(status : TaskStatus, comment : String, developer : Developer)
+  + getStatus() : TaskStatus
+  + getComment() : String
+  + getDate() : LocalDateTime
+  + getDeveloper() : Developer
+  + toString() : String
+}
+
+class Task {
+  - id : int
+  - title : String
+  - description : String
+  - developer : Developer
+  - status : TaskStatus
+  - history : StatusRecord[]
+  - historySize : int
+  + Task(id : int, title : String, description : String, developer : Developer)
+  + getId() : int
+  + getTitle() : String
+  + getDeveloper() : Developer
+  + getStatus() : TaskStatus
+  + getHistorySize() : int
+  + getHistoryRecord(index : int) : StatusRecord
+  + changeStatus(newStatus : TaskStatus, comment : String, developer : Developer) : void
+  - addStatusRecord(status : TaskStatus, comment : String, developer : Developer) : void
+  - increaseHistoryArray() : void
+  + toString() : String
+}
+
+class "TaskContainer<T>" as TaskContainer {
+  - data : Object[]
+  - size : int
+  + TaskContainer()
+  + TaskContainer(capacity : int)
+  + add(item : T) : void
+  + get(index : int) : T
+  + remove(index : int) : T
+  + size() : int
+  + capacity() : int
+  + isEmpty() : boolean
+  + iterator() : Iterator
+  - grow() : void
+  - checkIndex(index : int) : void
+}
+
+class TaskIterator {
+  - current : int
+  + hasNext() : boolean
+  + next() : T
+}
+
+class Main {
+  + main(args : String[]) : void
+}
+
+interface Iterable
+interface Iterator
+
+Developer "1" <-- "0..*" Task : призначена
+Task "1" --> "1" TaskStatus : поточний статус
+Task "1" *-- "1..*" StatusRecord : історія
+StatusRecord "0..*" --> "1" Developer : змінено
+StatusRecord "0..*" --> "1" TaskStatus : статус
+
+TaskContainer ..|> Iterable
+TaskIterator ..|> Iterator
+TaskContainer "1" *-- "1" TaskIterator : створює
+TaskContainer "1" o-- "0..*" Task : зберігає
+
+Main ..> Developer
+Main ..> Task
+Main ..> TaskStatus
+Main ..> TaskContainer
+
+@enduml

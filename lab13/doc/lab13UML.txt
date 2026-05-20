@@ -1,0 +1,81 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+class Main {
+    +main(args: String[]): void
+    -readFileFromResources(fileName: String): List<String>
+}
+
+class ScheduleProcessor {
+    -LINE_PATTERN: Pattern
+    +normalizeLine(line: String): String
+    +parseLine(line: String): Lesson
+    +processLinesInThreads(lines: List<String>): ScheduleResult
+    +buildReport(result: ScheduleResult): String
+    -handleOneLine(lineNumber: int, line: String): LineResult
+}
+
+class Lesson {
+    -day: WeekDay
+    -number: int
+    -startTime: LocalTime
+    -endTime: LocalTime
+    -classroom: String
+    -teacher: String
+    -subject: String
+    +getDay(): WeekDay
+    +getNumber(): int
+    +getTime(): String
+    +toString(): String
+}
+
+enum WeekDay {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+    +fromText(text: String): WeekDay
+}
+
+class ScheduleResult {
+    -lessons: List<Lesson>
+    -errors: List<String>
+    +addLesson(lesson: Lesson): void
+    +addError(error: String): void
+    +getLessons(): List<Lesson>
+    +getErrors(): List<String>
+}
+
+class LineResult {
+    -lesson: Lesson
+    -error: String
+    +success(lesson: Lesson): LineResult
+    +error(error: String): LineResult
+}
+
+class ExecutorService
+class Pattern
+class Matcher
+class StringBuilder
+
+Main --> ScheduleProcessor : uses
+Main --> ScheduleResult : receives
+
+ScheduleProcessor --> Lesson : creates
+ScheduleProcessor --> ScheduleResult : fills
+ScheduleProcessor --> LineResult : uses
+ScheduleProcessor ..> ExecutorService : threads
+ScheduleProcessor ..> Pattern : regex
+ScheduleProcessor ..> Matcher : groups
+ScheduleProcessor ..> StringBuilder : report
+
+Lesson --> WeekDay
+ScheduleResult "1" o-- "*" Lesson
+ScheduleResult "1" o-- "*" String : errors
+
+@enduml
